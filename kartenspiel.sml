@@ -17,24 +17,30 @@ datatype zug = Ablegen of karte
 exception IllegalerZug;
 
 fun kartenfarbe (karte) =
-let val (farbe, _) = karte in
+let val (farbe, bild) = karte in
   case farbe of 
-  Kreuz => Schwarz
+    Kreuz => Schwarz
     | Pik => Schwarz
     | Herz => Rot
     | Karo => Rot
 end;
 
 fun kartenwert (karte) = 
-let val (_, bild) = karte in 
+let val (farbe, bild) = karte in 
   case bild of
-  Bube => 10
+    Bube => 10
     | Dame => 10
     | Koenig => 10
     | Ass => 11
-    | Zahl zahlKarte => zahlKarte
+    | Zahl zahl_karte => zahl_karte
 end;
 
-kartenfarbe (Pik, Bube);
-kartenwert (Pik, Dame);
-kartenwert (Kreuz, Zahl 2);
+fun entferne_karte (karten_liste, gesuchte_karte) =
+  case karten_liste of
+    [] => []
+    | erste_Karte::rest_Karten => 
+if erste_Karte = gesuchte_karte
+then rest_Karten
+else [];
+
+entferne_karte ([(Herz, Ass), (Pik, Bube)], (Herz, Ass));

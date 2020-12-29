@@ -42,3 +42,11 @@ fun entferne_karte (karten_liste, gesuchte_karte) =
 if erste_karte = gesuchte_karte
 then rest_karten
 else erste_karte::entferne_karte(rest_karten, gesuchte_karte);
+
+fun alle_farben_gleich (karten_liste) =
+  case karten_liste of 
+    [] => true
+    | erste_karte::zweite_karte::rest_karten =>
+if kartenfarbe (erste_karte) = kartenfarbe (zweite_karte)
+then alle_farben_gleich (rest_karten)
+else false;

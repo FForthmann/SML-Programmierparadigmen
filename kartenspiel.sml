@@ -35,15 +35,10 @@ let val (farbe, bild) = karte in
     | Zahl zahl_karte => zahl_karte
 end;
 
-val karten_array = [];
-
 fun entferne_karte (karten_liste, gesuchte_karte) =
   case karten_liste of
     [] => []
     | erste_karte::rest_karten => 
 if erste_karte = gesuchte_karte
-then karten_array::rest_karten
-else karten_array = karten_array::erste_karte
-entferne_karte (rest_karten, gesuchte_karte);
-
-entferne_karte ([(Herz, Ass), (Pik, Bube), (Karo, Zahl 8)], (Karo, Zahl 8));
+then rest_karten
+else erste_karte::entferne_karte(rest_karten, gesuchte_karte);

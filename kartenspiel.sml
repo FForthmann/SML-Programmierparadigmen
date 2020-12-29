@@ -49,4 +49,6 @@ fun alle_farben_gleich (karten_liste) =
     | erste_karte::zweite_karte::rest_karten =>
 if kartenfarbe (erste_karte) = kartenfarbe (zweite_karte)
 then alle_farben_gleich (rest_karten)
+else if kartenfarbe (erste_karte) = kartenfarbe (zweite_karte) andalso rest_karten = []
+then true
 else false;

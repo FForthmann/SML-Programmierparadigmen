@@ -49,3 +49,10 @@ fun alle_farben_gleich (karten_liste) =
     | erste_karte::nil => true
     | erste_karte::zweite_karte::rest_karten =>
 kartenfarbe (erste_karte) = kartenfarbe (zweite_karte) andalso alle_farben_gleich(zweite_karte::rest_karten);
+
+fun kartensumme (karten_liste) = 
+  case karten_liste of 
+    nil => 0
+    | erste_karte::nil => kartenwert (erste_karte)
+    | erste_karte::rest_karten =>
+kartenwert (erste_karte) + kartensumme (rest_karten);

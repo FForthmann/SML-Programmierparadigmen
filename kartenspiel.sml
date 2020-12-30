@@ -56,3 +56,13 @@ fun kartensumme (karten_liste) =
     | erste_karte::nil => kartenwert (erste_karte)
     | erste_karte::rest_karten =>
 kartenwert (erste_karte) + kartensumme (rest_karten);
+
+fun berechne_punkte (karten_liste, zielwert) =
+if kartensumme (karten_liste) > zielwert
+then 3 * (kartensumme (karten_liste) - zielwert)
+else zielwert - kartensumme (karten_liste);
+
+fun punktestand (karten_liste, zielwert) =
+if alle_farben_gleich (karten_liste)
+then berechne_punkte (karten_liste, zielwert) * 2
+else berechne_punkte (karten_liste, zielwert);

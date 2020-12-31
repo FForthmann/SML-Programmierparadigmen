@@ -86,3 +86,20 @@ fun spielablauf (karten_liste, zuege_liste, zielwert) =
   in 
   punktestand (berechne_hand_karten (karten_liste, zuege_liste, []), zielwert)
   end;
+
+
+(* Funktionierende Tests: test 1-6 & 8 *)
+kartenfarbe (Kreuz, Zahl 2);
+kartenwert (Kreuz, Zahl 2);
+entferne_karte ([(Herz, Ass)], (Herz, Ass));
+alle_farben_gleich [(Herz, Ass), (Herz, Dame)];
+kartensumme [(Kreuz, Zahl 2), (Kreuz, Zahl 2)];
+punktestand ([(Herz, Zahl 2), (Kreuz, Zahl 4)], 10);
+spielablauf ([(Kreuz, Ass), (Pik, Ass), (Herz, Ass),(Karo, Ass)],[Aufnehmen, Aufnehmen, Aufnehmen,Aufnehmen, Aufnehmen], 42);
+
+(* Nicht funktionierende Tests: test 7 *)
+spielablauf ([(Herz, Zahl 2), (Kreuz, Zahl 4)],[Aufnehmen], 15);
+
+(* Unsicher ob funktionierende Tests: test 9 *)
+fun illegal f = (case f() of _ => false) handle IllegalerZug => true;
+illegal (fn() =>spielablauf ([(Kreuz, Bube), (Pik, Zahl(8))],[Aufnehmen, Ablegen(Herz, Bube)], 42));

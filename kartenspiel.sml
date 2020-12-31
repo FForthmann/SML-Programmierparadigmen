@@ -2,11 +2,13 @@ datatype reihe = Kreuz
                  | Pik 
                  | Herz
                  | Karo;
+
 datatype wert = Zahl of int
                  | Bube
                  | Dame
                  | Koenig
                  | Ass;
+
 type karte = reihe * wert;
 
 datatype farbe = Schwarz
@@ -37,7 +39,7 @@ end;
 
 fun entferne_karte (karten_liste, gesuchte_karte) =
   case karten_liste of
-    [] => []
+    [] => raise IllegalerZug
     | erste_karte::rest_karten => 
 if erste_karte = gesuchte_karte
 then rest_karten
@@ -45,27 +47,28 @@ else erste_karte::entferne_karte(rest_karten, gesuchte_karte);
 
 fun alle_farben_gleich (karten_liste) =
   case karten_liste of 
-    nil => true
-    | erste_karte::nil => true
+    [] => true
+    | erste_karte::[] => true
     | erste_karte::zweite_karte::rest_karten =>
 kartenfarbe (erste_karte) = kartenfarbe (zweite_karte) andalso alle_farben_gleich(zweite_karte::rest_karten);
 
 fun kartensumme (karten_liste) = 
   case karten_liste of 
-    nil => 0
-    | erste_karte::nil => kartenwert (erste_karte)
+    [] => 0
+    | erste_karte::[] => kartenwert (erste_karte)
     | erste_karte::rest_karten =>
 kartenwert (erste_karte) + kartensumme (rest_karten);
 
-fun berechne_punkte (karten_liste, zielwert) =
-if kartensumme (karten_liste) > zielwert
-then 3 * (kartensumme (karten_liste) - zielwert)
-else zielwert - kartensumme (karten_liste);
-
 fun punktestand (karten_liste, zielwert) =
-if alle_farben_gleich (karten_liste)
-then berechne_punkte (karten_liste, zielwert) * 2
-else berechne_punkte (karten_liste, zielwert);
+  let fun berechne_punkte (karten_liste, zielwert) =
+    if kartensumme (karten_liste) > zielwert
+    then 3 * (kartensumme (karten_liste) - zielwert)
+    else zielwert - kartensumme (karten_liste);
+  in
+    if alle_farben_gleich (karten_liste)
+    then berechne_punkte (karten_liste, zielwert) div 2
+    else berechne_punkte (karten_liste, zielwert)
+  end;
 
 fun spielablauf (karten_liste, zuege_liste, zielwert) =
   let fun berechne_hand_karten (karten_liste, zuege_liste, hand_karten_liste) =
@@ -87,19 +90,14 @@ fun spielablauf (karten_liste, zuege_liste, zielwert) =
   punktestand (berechne_hand_karten (karten_liste, zuege_liste, []), zielwert)
   end;
 
-
-(* Funktionierende Tests: test 1-6 & 8 *)
+(* Funktionierende Tests *)
 kartenfarbe (Kreuz, Zahl 2);
 kartenwert (Kreuz, Zahl 2);
 entferne_karte ([(Herz, Ass)], (Herz, Ass));
 alle_farben_gleich [(Herz, Ass), (Herz, Dame)];
 kartensumme [(Kreuz, Zahl 2), (Kreuz, Zahl 2)];
 punktestand ([(Herz, Zahl 2), (Kreuz, Zahl 4)], 10);
-spielablauf ([(Kreuz, Ass), (Pik, Ass), (Herz, Ass),(Karo, Ass)],[Aufnehmen, Aufnehmen, Aufnehmen,Aufnehmen, Aufnehmen], 42);
-
-(* Nicht funktionierende Tests: test 7 *)
 spielablauf ([(Herz, Zahl 2), (Kreuz, Zahl 4)],[Aufnehmen], 15);
-
-(* Unsicher ob funktionierende Tests: test 9 *)
+spielablauf ([(Kreuz, Ass), (Pik, Ass), (Herz, Ass),(Karo, Ass)],[Aufnehmen, Aufnehmen, Aufnehmen,Aufnehmen, Aufnehmen], 42);
 fun illegal f = (case f() of _ => false) handle IllegalerZug => true;
 illegal (fn() =>spielablauf ([(Kreuz, Bube), (Pik, Zahl(8))],[Aufnehmen, Ablegen(Herz, Bube)], 42));

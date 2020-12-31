@@ -66,3 +66,20 @@ fun punktestand (karten_liste, zielwert) =
 if alle_farben_gleich (karten_liste)
 then berechne_punkte (karten_liste, zielwert) * 2
 else berechne_punkte (karten_liste, zielwert);
+
+fun spielablauf (karten_liste, zuege_liste, zielwert) =
+  let fun berechne_hand_karten (karten_liste, zuege_liste, hand_karten_liste) =
+   case zuege_liste of 
+    [] => hand_karten_liste
+    | erster_zug::restliche_zuege =>
+      case erster_zug of
+      Ablegen (karte) => 
+        berechne_hand_karten (karten_liste, restliche_zuege, entferne_karte (hand_karten_liste, karte))
+      | Aufnehmen => 
+        case karten_liste of 
+          [] => raise IllegalerZug
+          | erste_karte::restliche_karten => 
+            berechne_hand_karten (restliche_karten, restliche_zuege, erste_karte::hand_karten_liste)
+  in 
+  punktestand (berechne_hand_karten (karten_liste, zuege_liste, []), zielwert)
+  end;

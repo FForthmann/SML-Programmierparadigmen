@@ -98,6 +98,6 @@ alle_farben_gleich [(Herz, Ass), (Herz, Dame)];
 kartensumme [(Kreuz, Zahl 2), (Kreuz, Zahl 2)];
 punktestand ([(Herz, Zahl 2), (Kreuz, Zahl 4)], 10);
 spielablauf ([(Herz, Zahl 2), (Kreuz, Zahl 4)],[Aufnehmen], 15);
-spielablauf ([(Kreuz, Ass), (Pik, Ass), (Herz, Ass),(Karo, Ass)],[Aufnehmen, Aufnehmen, Aufnehmen,Aufnehmen, Aufnehmen], 42);
+spielablauf ([(Kreuz, Ass), (Pik, Ass), (Herz, Ass),(Karo, Ass)],[Aufnehmen, Aufnehmen, Aufnehmen, Aufnehmen, Aufnehmen], 42);
 fun illegal f = (case f() of _ => false) handle IllegalerZug => true;
-illegal (fn() =>spielablauf ([(Kreuz, Bube), (Pik, Zahl(8))],[Aufnehmen, Ablegen(Herz, Bube)], 42));
+illegal (fn() => spielablauf ([(Kreuz, Bube), (Pik, Zahl(8))], [Aufnehmen, Ablegen(Herz, Bube)], 42));

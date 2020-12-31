@@ -87,7 +87,7 @@ fun spielablauf (karten_liste, zuege_liste, zielwert) =
           | erste_karte::restliche_karten => 
             berechne_hand_karten (restliche_karten, restliche_zuege, erste_karte::hand_karten_liste)
   in 
-  punktestand (berechne_hand_karten (karten_liste, zuege_liste, []), zielwert)
+    punktestand (berechne_hand_karten (karten_liste, zuege_liste, []), zielwert)
   end;
 
 (* Funktionierende Tests *)

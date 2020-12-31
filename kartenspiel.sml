@@ -69,6 +69,9 @@ else berechne_punkte (karten_liste, zielwert);
 
 fun spielablauf (karten_liste, zuege_liste, zielwert) =
   let fun berechne_hand_karten (karten_liste, zuege_liste, hand_karten_liste) =
+   if kartensumme (hand_karten_liste) > zielwert
+   then hand_karten_liste
+   else
    case zuege_liste of 
     [] => hand_karten_liste
     | erster_zug::restliche_zuege =>
